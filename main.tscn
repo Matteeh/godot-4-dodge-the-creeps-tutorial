@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmn2pykgo2fgt"]
+
+[ext_resource type="Script" path="res://Main.cs" id="1_pqosk"]
+[ext_resource type="PackedScene" uid="uid://c7wic5l7wqp1t" path="res://player.tscn" id="2_cyuki"]
+[ext_resource type="PackedScene" uid="uid://bn0cv7r5hnq0p" path="res://enemy.tscn" id="2_gat0b"]
+[ext_resource type="PackedScene" uid="uid://cdqborqgiejm1" path="res://hud.tscn" id="4_jj1sy"]
+
+[sub_resource type="Curve2D" id="Curve2D_atsxc"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, -8, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+}
+point_count = 10
+
+[node name="Main" type="Node"]
+script = ExtResource("1_pqosk")
+EnemyScene = ExtResource("2_gat0b")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.203922, 0.431373, 0.47451, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_cyuki")]
+
+[node name="EnemyTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="EnemyPath" type="Path2D" parent="."]
+position = Vector2(-25, 0)
+scale = Vector2(1.1, 1.1)
+curve = SubResource("Curve2D_atsxc")
+
+[node name="EnemySpawnLocation" type="PathFollow2D" parent="EnemyPath"]
+position = Vector2(-0.0860596, 0.00143433)
+
+[node name="HUD" parent="." instance=ExtResource("4_jj1sy")]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="Hit" from="Player" to="." method="game_over"]
